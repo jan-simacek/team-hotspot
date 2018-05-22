@@ -1,7 +1,7 @@
 package com.ths.model
 
 enum class ChangeType {
-    ADD, MODIFY, BRANCH, COPY, DELETE;
+    ADD, MODIFY, BRANCH, COPY, DELETE, REPLACE, OTHER;
 
     companion object {
         fun findByChar(type: Char): ChangeType = when(type){
@@ -9,7 +9,8 @@ enum class ChangeType {
             'C' -> COPY
             'M' -> MODIFY
             'D' -> DELETE
-            else -> throw IllegalArgumentException("Unknown change type $type")
+            'R' -> REPLACE
+            else -> OTHER
         }
     }
 }
