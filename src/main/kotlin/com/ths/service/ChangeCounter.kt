@@ -3,6 +3,9 @@ package com.ths.service
 import com.google.common.collect.Multimaps
 import com.ths.model.RevisionAndBranch
 import com.ths.svn.SvnClient
+import org.apache.log4j.Logger
+
+private val log = Logger.getLogger(BranchAndNoOfChanges::class.java)
 
 data class BranchAndNoOfChanges(val branchUrl: String, val noOfChanges: Int)
 class ChangeCounter(private val svnClient: SvnClient) {
@@ -12,6 +15,7 @@ class ChangeCounter(private val svnClient: SvnClient) {
     }
 
     private fun countChangesForPath(changedPath: ChangedPath, branches: Collection<RevisionAndBranch>): List<BranchAndNoOfChanges> {
+        log.debug("Processing log for $changedPath")
         val branchToRevisions = Multimaps.transformValues(Multimaps.index(branches, { it!!.branch }), { it!!.revision })
         val branchToRevisionRanges = branchToRevisions.asMap().entries.map {
             val revisions = it.value.map { it.number }
@@ -30,8 +34,10 @@ class ChangeCounter(private val svnClient: SvnClient) {
     }
 
     fun countChanges(changedPathsAndRevisions: Map<ChangedPath, Collection<RevisionAndBranch>>): Map<ChangedPath, Collection<BranchAndNoOfChanges>> {
-        return changedPathsAndRevisions.entries.map {
-            Pair(it.key, countChangesForPath(it.key, it.value))
+        val noOfChangedPaths = changedPathsAndRevisions.size
+        return changedPathsAndRevisions.entries.mapIndexed { index, entry ->
+            log.info("Processing conflicting path ${index + 1} of $noOfChangedPaths")
+            Pair(entry.key, countChangesForPath(entry.key, entry.value))
         }.toMap()
     }
 }

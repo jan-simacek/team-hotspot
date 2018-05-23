@@ -1,11 +1,16 @@
 package com.ths.cli
 
+import com.ths.output.OutputSerializer
+import com.ths.output.writeToFile
 import com.ths.service.ChangeCounter
 import com.ths.service.ConflictDetector
 import com.ths.svn.SvnClient
-const val ARG_COUNT = 7
+import java.io.File
+
+const val ARG_COUNT = 8
 
 fun main(args: Array<String>) {
+
     val cmdlineArgs = parseArgs(args) ?: return
 
     val svnClient = SvnClient(
@@ -18,8 +23,9 @@ fun main(args: Array<String>) {
             endRevision = cmdlineArgs.endRevision
     )
     val conflicts = ConflictDetector(svnClient.loadLogs()).findConflicts()
-    println(conflicts)
-    println(ChangeCounter(svnClient).countChanges(conflicts))
+    OutputSerializer
+            .convertToOutputDtos(ChangeCounter(svnClient).countChanges(conflicts))
+            .writeToFile(File(cmdlineArgs.outputFile))
 }
 
 fun parseArgs(args: Array<String>): CmdlineArgs? {
@@ -35,7 +41,8 @@ fun parseArgs(args: Array<String>): CmdlineArgs? {
                 trunkPath = args[3],
                 branchesPath = args[4],
                 startRevision = args[5].toLong(),
-                endRevision = args[6].toLong()
+                endRevision = args[6].toLong(),
+                outputFile = args[7]
         )
     } catch(e: Exception) {
         printUsage();
@@ -45,8 +52,8 @@ fun parseArgs(args: Array<String>): CmdlineArgs? {
 
 private fun printUsage() {
     println("Usage:")
-    println("hs-server <user_name> <password> <repository_root_url> <trunk_path> <branches_path> <start_revision> <end_revision>")
-    println("Example: hs-server testuser mypass https://infor.com/nxs/svn/pokus /trunk /branches 123 124")
+    println("hs-server <user_name> <password> <repository_root_url> <trunk_path> <branches_path> <start_revision> <end_revision> <output_file>")
+    println("Example: hs-server testuser mypass https://infor.com/nxs/svn/pokus /trunk /branches 123 124 changes.json")
 }
 
 data class CmdlineArgs(
@@ -56,5 +63,6 @@ data class CmdlineArgs(
     val trunkPath: String,
     val branchesPath: String,
     val startRevision: Long,
-    val endRevision: Long
+    val endRevision: Long,
+    val outputFile: String
 )
