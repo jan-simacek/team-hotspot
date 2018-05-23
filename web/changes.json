@@ -1,0 +1,14 @@
+{"paths":[
+	{
+		"path":"/testfile.txt",
+		"branches":[
+			{"branch":"/branches/vetev","noOfChanges":7},
+			{"branch":"/branches/vetev2","noOfChanges":6}
+		]
+	},
+	{"path":"/testfile.txt","branches":[{"branch":"/branches/vetev","noOfChanges":7},{"branch":"/branches/vetev2","noOfChanges":6}]},
+	{"path":"/testfile.txt","branches":[{"branch":"/branches/vetev","noOfChanges":7},{"branch":"/branches/vetev2","noOfChanges":6}]},
+	{"path":"/testfile.txt","branches":[{"branch":"/branches/vetev","noOfChanges":7},{"branch":"/branches/vetev2","noOfChanges":6}]},
+	{"path":"/testfile.txt","branches":[{"branch":"/branches/vetev","noOfChanges":7},{"branch":"/branches/vetev2","noOfChanges":6}]},
+	{"path":"/testfile.txt","branches":[{"branch":"/branches/vetev","noOfChanges":7},{"branch":"/branches/vetev2","noOfChanges":6}]}
+]}
