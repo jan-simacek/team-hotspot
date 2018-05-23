@@ -18,7 +18,7 @@ class SvnClient(userName: String, password: String, private val repositoryUrl: S
     private val diffClient = clientManager.diffClient
     private val uri = SVNURL.parseURIEncoded(repositoryUrl)
     private val revisionRange = SVNRevisionRange(SVNRevision.create(startRevision), SVNRevision.create(endRevision))
-    private val paths = Array(1, {"."})
+    private val paths = Array(1, {branchesUrl})
     private val branchBuilder = SvnHandler(trunkPath)
 
     fun loadLogs(): List<Branch> {
