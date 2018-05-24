@@ -27,7 +27,7 @@ class SvnHandler(private val trunkPath: String): ISVNLogEntryHandler {
     fun assembleBranches(): List<Branch> {
         return revisions
                 .filter { it.isTrunkBranch() }
-                .map { Branch(it.branchUrl!!, it.trunkRevision!!, findRevisionsForBranch(it.branchUrl!!)) }
+                .map { Branch(it.branchUrl!!, it.trunkRevision!!, it.author, findRevisionsForBranch(it.branchUrl!!)) }
     }
     private fun findRevisionsForBranch(branchUrl: String): List<Revision> = revisions.filter { !it.isTrunkBranch() && it.isForUrl(branchUrl)}
 }

@@ -12,7 +12,7 @@ object OutputSerializer {
     fun convertToOutputDtos(changes: Map<ChangedPath, Collection<BranchAndNoOfChanges>>): OutputDto {
         return OutputDto(changes.entries.map {
             PathOutputDto(it.key, it.value.map {
-                BranchOutputDto(it.branchUrl, it.noOfChanges)
+                BranchOutputDto(it.branchUrl, it.author, it.noOfChanges)
             }.toList().sortedBy { it.noOfChanges }.reversed())
         }.toList().sortedBy { it.path })
     }

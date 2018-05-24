@@ -18,14 +18,22 @@ version '1.0-SNAPSHOT'
 
 apply plugin: 'kotlin'
 
+kotlin {
+    experimental {
+        coroutines 'enable'
+    }
+}
+
 sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:0.21"
     // https://mvnrepository.com/artifact/org.tmatesoft.svnkit/svnkit
     compile group: 'org.tmatesoft.svnkit', name: 'svnkit', version: '1.9.2'
     // https://mvnrepository.com/artifact/com.google.guava/guava
