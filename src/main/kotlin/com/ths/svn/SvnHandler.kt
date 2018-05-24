@@ -17,7 +17,7 @@ class SvnHandler(private val trunkPath: String): ISVNLogEntryHandler {
             val changeEntry = it.value
      Change(
                 changeEntry.path,
-                if(changeEntry.copyPath == trunkPath) ChangeType.BRANCH else ChangeType.findByChar(changeEntry.type),
+                if(changeEntry.copyPath == trunkPath && changeEntry.type == ChangeType.COPY.symbol) ChangeType.BRANCH else ChangeType.findByChar(changeEntry.type),
                 changeEntry.copyPath,
                 changeEntry.copyRevision
             )

@@ -1,3 +1,7 @@
 @media only screen and (min-width : 1200px) {
     .wide-container { max-width: 90%; }
 }
+
+.collapse-icon {
+    cursor: pointer;
+}

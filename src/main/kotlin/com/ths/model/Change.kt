@@ -1,7 +1,13 @@
 package com.ths.model
 
-enum class ChangeType {
-    ADD, MODIFY, BRANCH, COPY, DELETE, REPLACE, OTHER;
+enum class ChangeType(val symbol: Char) {
+    ADD('A'),
+    MODIFY('M'),
+    BRANCH('B'),
+    COPY('C'),
+    DELETE('D'),
+    REPLACE('R'),
+    OTHER('O');
 
     companion object {
         fun findByChar(type: Char): ChangeType = when(type){

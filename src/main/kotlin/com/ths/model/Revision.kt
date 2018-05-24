@@ -5,6 +5,7 @@ import java.util.*
 data class Revision(val number: Long, val author: String, val date: Date, val changes: List<Change>) {
     fun isTrunkBranch(): Boolean = changes.findBranch() != null
     fun isForUrl(branchUrl: String) = changes.all { it.path.startsWith("$branchUrl/") }
+    fun hasDeleteOf(path: String): Boolean = changes.any { it.type == ChangeType.DELETE  && it.path == path}
 
     val trunkRevision: Long?
         get() = changes.findBranch()?.copyRev

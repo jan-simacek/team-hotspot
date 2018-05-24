@@ -1,6 +1,7 @@
 package com.ths.service
 
 import com.google.common.collect.Multimaps
+import com.ths.model.Revision
 import com.ths.model.RevisionAndBranch
 import com.ths.svn.SvnClient
 import org.apache.log4j.Logger
@@ -28,8 +29,12 @@ class ChangeCounter(private val svnClient: SvnClient) {
             Pair(it.key.baseUrl, Pair(min, max))
         }.toMap()
 
+        val branchToScore = branchToRevisions.asMap().map {
+            Pair(it.key.baseUrl, if(it.value.hasDeleteOf(changedPath)) Int.MAX_VALUE else 1)
+        }.toMap()
+
         return branches.map { Pair(it.branch.baseUrl, it.branch.author) }.toSet().map {
-            BranchAndNoOfChanges(it.first, it.second, processDiff(it.first + changedPath, branchToRevisionRanges[it.first]!!))
+            BranchAndNoOfChanges(it.first, it.second, Math.max(processDiff(it.first + changedPath, branchToRevisionRanges[it.first]!!), branchToScore[it.first]!!))
         }
     }
 
@@ -40,4 +45,6 @@ class ChangeCounter(private val svnClient: SvnClient) {
             Pair(entry.key, countChangesForPath(entry.key, entry.value))
         }.toMap()
     }
+
+    private fun Collection<Revision>.hasDeleteOf(path: String) = any { it.hasDeleteOf(path) }
 }
