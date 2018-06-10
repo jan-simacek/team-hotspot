@@ -17,7 +17,7 @@ class ConflictDetector(_branches: Collection<Branch>) {
     fun findConflicts(): Map<ChangedPath, Collection<RevisionAndBranch>> {
         val pathToRevisions = ArrayListMultimap.create<String, RevisionAndBranch>()
         branches.forEach { pathToRevisions.putChangesFromBranch(it) }
-        return pathToRevisions.asMap().entries.filter { it.value.map { it.branch.baseUrl }.toSet().size > 1 }.map { Pair(it.key, it.value) }.toMap()
+        return pathToRevisions.asMap().entries.filter { it.value.map { it.branch.author }.toSet().size > 1 }.map { Pair(it.key, it.value) }.toMap()
     }
 
     private fun Multimap<String, RevisionAndBranch>.putChangesFromRevision(rev: RevisionAndBranch) =
